@@ -16,8 +16,6 @@ int partition(int arr[], int low, int high)
  
 
         if (arr[j] < pivot) {
- 
-            // Increment index of smaller element
             i++;
             swap(&arr[i], &arr[j]);
         }
@@ -36,6 +34,8 @@ void quickSort(int arr[], int low, int high)
 int main()
 {
     int arr[] = { 10, 7, 8, 9, 1, 5 };
+    for(int k=0;k<5;k++)
+    printf("%d ",arr[k]);
     int N = sizeof(arr) / sizeof(arr[0]);
  
 
