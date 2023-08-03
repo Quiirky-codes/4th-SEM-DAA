@@ -1,2 +1,2 @@
 # 4th-SEM-DAA
-All DAA programs in a single place.
+All DAA programs using C in a single place.
