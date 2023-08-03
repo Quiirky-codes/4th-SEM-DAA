@@ -1,2 +1,2 @@
 # 4th-SEM-DAA
-All DAA programs using C in a single place.
+All the Design and Analysis of Algorithms programs using C.
