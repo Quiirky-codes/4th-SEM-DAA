@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+void swap(char **str1, char **str2) {
+    char *temp = *str1;
+    *str1 = *str2;
+    *str2 = temp;
+}
+int partition(char *arr[], int low, int high) {
+    char *pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (strcmp(arr[j], pivot) < 0) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+void quickSort(char *arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of names: ");
+    scanf("%d", &n);
+char **names = (char **)malloc(n * sizeof(char *));
+    for (int i = 0; i < n; i++) {
+        names[i] = (char *)malloc(100 * sizeof(char));
+        printf("Enter name %d: ", i + 1);
+        scanf("%s", names[i]);
+    }
+quickSort(names, 0, n - 1);
+printf("Sorted Names:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%s\n", names[i]);
+    }
+ for (int i = 0; i < n; i++) {
+        free(names[i]);
+    }
+    free(names);
+
+    return 0;
+}
