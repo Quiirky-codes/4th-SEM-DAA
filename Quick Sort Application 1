@@ -27,7 +27,6 @@ void quickSort(char *arr[], int low, int high) {
         quickSort(arr, pi + 1, high);
     }
 }
-
 int main() {
     int n;
     printf("Enter the number of names: ");
@@ -47,6 +46,5 @@ printf("Sorted Names:\n");
         free(names[i]);
     }
     free(names);
-
     return 0;
 }
