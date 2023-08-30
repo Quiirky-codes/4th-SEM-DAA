@@ -1,18 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-#define INF 999999 // Infinity value for representing unreachable distances
-
 struct Edge {
     int source, destination, weight;
 };
-
 struct Graph {
     int numVertices, numEdges;
     struct Edge* edges;
 };
-
 struct Graph* createGraph(int numVertices, int numEdges) {
     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
     graph->numVertices = numVertices;
@@ -20,7 +15,6 @@ struct Graph* createGraph(int numVertices, int numEdges) {
     graph->edges = (struct Edge*)malloc(numEdges * sizeof(struct Edge));
     return graph;
 }
-
 void initializeDistances(int distances[], int numVertices, int source) {
     for (int i = 0; i < numVertices; ++i) {
         if (i == source)
@@ -29,27 +23,21 @@ void initializeDistances(int distances[], int numVertices, int source) {
             distances[i] = INF;
     }
 }
-
 void relax(struct Edge edge, int distances[]) {
     if (distances[edge.source] != INF && distances[edge.source] + edge.weight < distances[edge.destination]) {
         distances[edge.destination] = distances[edge.source] + edge.weight;
     }
 }
-
 void BellmanFord(struct Graph* graph, int source) {
     int numVertices = graph->numVertices;
     int numEdges = graph->numEdges;
     int distances[numVertices];
-    
     initializeDistances(distances, numVertices, source);
-    
     for (int i = 1; i < numVertices; ++i) {
         for (int j = 0; j < numEdges; ++j) {
             relax(graph->edges[j], distances);
         }
     }
-    
-    // Check for negative-weight cycles
     for (int i = 0; i < numEdges; ++i) {
         struct Edge edge = graph->edges[i];
         if (distances[edge.source] != INF && distances[edge.source] + edge.weight < distances[edge.destination]) {
@@ -57,14 +45,11 @@ void BellmanFord(struct Graph* graph, int source) {
             return;
         }
     }
-    
-    // Print shortest distances
     printf("Shortest distances from source %d:\n", source);
     for (int i = 0; i < numVertices; ++i) {
         printf("Vertex %d: Distance = %d\n", i, distances[i]);
     }
 }
-
 int main() {
     int numVertices, numEdges, source;
     printf("Enter the number of vertices and edges: ");
@@ -76,11 +61,8 @@ int main() {
     for (int i = 0; i < numEdges; ++i) {
         scanf("%d %d %d", &graph->edges[i].source, &graph->edges[i].destination, &graph->edges[i].weight);
     }
-    
     printf("Enter the source vertex: ");
     scanf("%d", &source);
-    
     BellmanFord(graph, source);
-    
     return 0;
 }
