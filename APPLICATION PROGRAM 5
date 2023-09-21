@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+#define V 100
+#define INF INT_MAX
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+bool bfs(int residualGraph[V][V], int parent[V], int source, int sink, int vertices) {
+    bool visited[vertices];
+    for (int i = 0; i < vertices; i++) {
+        visited[i] = false;
+    }
+    visited[source] = true;
+    parent[source] = -1;
+    int queue[V];
+    int front = 0, rear = 0;
+    queue[rear++] = source;
+    while (front < rear) {
+        int u = queue[front++];
+        for (int v = 0; v < vertices; v++) {
+            if (!visited[v] && residualGraph[u][v] > 0) {
+                queue[rear++] = v;
+                parent[v] = u;
+                visited[v] = true;
+            }
+        }
+    }
+return visited[sink];
+}
+int maxFlow(int graph[V][V], int source, int sink, int vertices) {
+    int u, v;
+    int residualGraph[V][V]; 
+    int parent[V]; 
+    int maxFlow = 0;
+    for (u = 0; u < vertices; u++) {
+        for (v = 0; v < vertices; v++) {
+            residualGraph[u][v] = graph[u][v];
+        }
+    }
+    while (bfs(residualGraph, parent, source, sink, vertices)) {
+        int pathFlow = INF;
+        for (v = sink; v != source; v = parent[v]) {
+            u = parent[v];
+            pathFlow = min(pathFlow, residualGraph[u][v]);
+        }
+    for (v = sink; v != source; v = parent[v]) {
+            u = parent[v];
+            residualGraph[u][v] -= pathFlow;
+            residualGraph[v][u] += pathFlow;
+        }
+        maxFlow += pathFlow;
+    }
+return maxFlow;
+}
+
+int main() {
+    int vertices, edges;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    int graph[V][V] = {0};
+
+    printf("Enter edge capacities (source, destination, capacity):\n");
+    for (int i = 0; i < edges; i++) {
+        int u, v, capacity;
+        scanf("%d %d %d", &u, &v, &capacity);
+        graph[u][v] = capacity;
+    }
+
+    int source, sink;
+    printf("Enter the source vertex: ");
+    scanf("%d", &source);
+
+    printf("Enter the sink vertex: ");
+    scanf("%d", &sink);
+
+    int max_flow = maxFlow(graph, source, sink, vertices);
+    printf("Maximum Flow from source to sink: %d\n", max_flow);
+   return 0;
+}
